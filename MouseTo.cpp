@@ -1,13 +1,15 @@
 // MouseTo - Library for Arduino Leonardo/Micro for moving the mouse pointer to absolute screen coordinates: http://github.com/per1234/MouseTo
 #include "MouseTo.h"
 
-
 MouseToClass::MouseToClass() {
   //set default values
   screenResolutionX = 3840;  //4K UHD
   screenResolutionY = 2160;  //4K UHD
   correctionFactor = 1;
   jumpDistance = 10;  //this seems like a good balance between speed and accuracy
+  
+  initialXMoves = 1;
+  initialYMoves = 1;
 }
 
 
@@ -16,6 +18,18 @@ void MouseToClass::setTarget(const int targetXinput, const int targetYinput, con
   targetX = targetXinput * correctionFactor;
   targetY = targetYinput * correctionFactor;
   homed = !homeFirst;
+  
+  const int xDistance = targetX - positionX;
+  const int yDistance = targetY - positionY;
+  
+  const int xbyyRatio = abs(xDistance) / abs(yDistance);
+  const int ybyxRatio = abs(yDistance) / abs(xDistance);
+  
+  initialXMoves = max(1, xbyyRatio);
+  initialYMoves = max(1, ybyxRatio);
+  
+  xMoves = initialXMoves;
+  yMoves = initialYMoves;
 }
 
 
@@ -55,13 +69,29 @@ boolean MouseToClass::move() {
       const int moveX = moveToTargetX > positionX ? min(jumpDistance, moveToTargetX - positionX) : max(-jumpDistance, moveToTargetX - positionX);
       Mouse.move(moveX, 0, 0);
       positionX += moveX;
-      moveAxisX = false;
+      
+      if (xMoves > 0) {
+        xMoves--;
+      }
+      
+      if (xMoves == 0) {
+        moveAxisX = false;
+        xMoves = initialXMoves;
+      }
     }
     else {
       const int moveY = moveToTargetY > positionY ? min(jumpDistance, moveToTargetY - positionY) : max(-jumpDistance, moveToTargetY - positionY);
       Mouse.move(0, moveY, 0);
       positionY += moveY;
-      moveAxisX = true;
+      
+      if (yMoves > 0) {
+        yMoves--;
+      }
+      
+      if (yMoves == 0) {
+        moveAxisX = true;
+        yMoves = initialYMoves;
+      }
     }
   }
   else { //home or target position reached
@@ -72,6 +102,11 @@ boolean MouseToClass::move() {
       return false;
     }
     homed = false;  //reset for the next go
+    
+    initialXMoves = 1;
+    initialYMoves = 1;
+    xMoves = 1;
+    yMoves = 1;
     return true;
   }
   return false;

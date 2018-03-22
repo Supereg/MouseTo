@@ -34,6 +34,10 @@ class MouseToClass {
     float correctionFactor;
     int8_t jumpDistance;
     boolean moveAxisX;
+    int initialXMoves;
+    int initialYMoves;
+    int xMoves;
+    int yMoves;
 };
 extern MouseToClass MouseTo;  //declare the class so it doesn't have to be done in the sketch
 #endif  //MouseTo_h

@@ -81,7 +81,7 @@ boolean MouseToClass::move() {
     }
     else {
       const int moveY = moveToTargetY > positionY ? min(jumpDistance, moveToTargetY - positionY) : max(-jumpDistance, moveToTargetY - positionY);
-      Mouse.move(0, moveY, 0);
+      Mouse.move(0, -moveY, 0); // we have -moveY to have calibration corner on the bottom left
       positionY += moveY;
       
       if (yMoves > 0) {

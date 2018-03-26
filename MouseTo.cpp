@@ -19,8 +19,16 @@ void MouseToClass::setTarget(const int targetXinput, const int targetYinput, con
   targetY = targetYinput * correctionFactor;
   homed = !homeFirst;
   
-  const int xDistance = targetX - positionX;
-  const int yDistance = targetY - positionY;
+  int xDistance;
+  int yDistance;
+  if (homeFirst) {
+    xDistance = targetX;
+    yDistance = targetY;
+  }
+  else {
+    xDistance = targetX - positionX;
+    yDistance = targetY - positionY;
+  }
   
   const int xbyyRatio = abs(xDistance) / abs(yDistance);
   const int ybyxRatio = abs(yDistance) / abs(xDistance);

@@ -5,7 +5,7 @@ Library for [Arduino](https://arduino.cc) Leonardo/Micro/Pro Micro for moving th
 
 <a id="installation"></a>
 #### Installation
-- Download the most recent version of MouseTo here: https://github.com/per1234/MouseTo/archive/master.zip
+- Download the most recent version of MouseTo here: https://github.com/Supereg/MouseTo/archive/master.zip
 - Using Arduino IDE 1.0.x:
   - **Sketch > Import Library... > Add Library... >** select the downloaded file **> Open**
 - Using Arduino IDE 1.5+:

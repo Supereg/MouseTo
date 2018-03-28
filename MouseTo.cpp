@@ -158,6 +158,9 @@ int8_t MouseToClass::getMaxJump() {
 
 void MouseToClass::home() {
   homed = false;
+  
+  targetX = 0;
+  targetY = 0;
 }
 
 MouseToClass MouseTo;  //This sets up a single global instance of the library so the class doesn't need to be declared in the user sketch and multiple instances are not necessary in this case.
